@@ -158,7 +158,7 @@ print(followers2)
 
 results = list(set(followers1) & set(followers2))
 
-with open('results.txt', 'w', encoding='utf-8') as f:
+with open('results.txt', 'w', encoding='utf-16') as f:
     f.write("Количество одинаковых подписчиков: " + str(len(results)) + "\n")
     for result in results:
         f.write("%s\n" % result)
