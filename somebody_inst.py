@@ -71,22 +71,23 @@ while main_running:
         print(colored('Вы ввели что-то неправильно', 'red'))
 
     while running:
+
         headers = {
             'authority': 'www.instagram.com',
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
             'accept': '*/*',
-            'x-ig-www-claim': 'hmac.AR25C663GaoISsw34AOKajKrq3gSVfpl87zIZ8jP7FTs8fPe',
+            'x-ig-www-claim': 'hmac.AR25C663GaoISsw34AOKajKrq3gSVfpl87zIZ8jP7FTs8Wvk',
             'x-requested-with': 'XMLHttpRequest',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36',
-            'x-csrftoken': 'ysnHbkYV4Iqpv4h7g44Q2J44L45gpEPc',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36',
+            'x-csrftoken': 'fvjH8x1mfcSHPKv6jSh4D8m5OIm7ODvP',
             'x-ig-app-id': '936619743392459',
             'sec-fetch-site': 'same-origin',
             'sec-fetch-mode': 'cors',
             'sec-fetch-dest': 'empty',
             'referer': f'https://www.instagram.com/{username}/followers/',
             'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-            'cookie': 'ig_did=3E0F79A6-A1B6-4A7C-B022-85323BF49290; mid=Xo2-OwALAAEwhZcC9tn71161Ws4t; shbid=17090; csrftoken=ysnHbkYV4Iqpv4h7g44Q2J44L45gpEPc; ds_user_id=9302714734; sessionid=9302714734%3Axnuv5160jwU97k%3A23; shbts=1590581290.3389668; urlgen="{\\"93.185.29.181\\": 12389}:1jey4R:MjigUBFUGiY1PqoDYJR5xUy17Sw"',
+            'cookie': 'ig_did=3E0F79A6-A1B6-4A7C-B022-85323BF49290; mid=Xo2-OwALAAEwhZcC9tn71161Ws4t; shbid=17090; shbts=1596141766.8646536; csrftoken=fvjH8x1mfcSHPKv6jSh4D8m5OIm7ODvP; ds_user_id=9302714734; sessionid=9302714734%3AlnwEO8AzzoFMuk%3A26; rur=FTW; urlgen="{\\"93.185.28.144\\": 12389}:1k2ALp:I90qqZsno25QN6hkSNsDSVqHpIw"',
         }
 
         if after:
@@ -94,17 +95,50 @@ while main_running:
         else:
             after_value = ''
 
-        params = {
+        params = (
             ('query_hash', 'c76146de99bb02f6415203be841dd25a'),
             ('variables', f'{{"id":"{id}","include_reel":true,"fetch_mutual":false,"first":1000{after_value}}}'),
-        }
+        )
+
+        # response = requests.get('https://www.instagram.com/graphql/query/', headers=headers, params=params)
+        #
+        #
+        #
+        #
+        # headers = {
+        #     'authority': 'www.instagram.com',
+        #     'pragma': 'no-cache',
+        #     'cache-control': 'no-cache',
+        #     'accept': '*/*',
+        #     'x-ig-www-claim': 'hmac.AR25C663GaoISsw34AOKajKrq3gSVfpl87zIZ8jP7FTs8fPe',
+        #     'x-requested-with': 'XMLHttpRequest',
+        #     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36',
+        #     'x-csrftoken': 'ysnHbkYV4Iqpv4h7g44Q2J44L45gpEPc',
+        #     'x-ig-app-id': '936619743392459',
+        #     'sec-fetch-site': 'same-origin',
+        #     'sec-fetch-mode': 'cors',
+        #     'sec-fetch-dest': 'empty',
+        #     'referer': f'https://www.instagram.com/{username}/followers/',
+        #     'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+        #     'cookie': 'ig_did=3E0F79A6-A1B6-4A7C-B022-85323BF49290; mid=Xo2-OwALAAEwhZcC9tn71161Ws4t; shbid=17090; csrftoken=ysnHbkYV4Iqpv4h7g44Q2J44L45gpEPc; ds_user_id=9302714734; sessionid=9302714734%3Axnuv5160jwU97k%3A23; shbts=1590581290.3389668; urlgen="{\\"93.185.29.181\\": 12389}:1jey4R:MjigUBFUGiY1PqoDYJR5xUy17Sw"',
+        # }
+        #
+        # if after:
+        #     after_value = f', "after": "{after}"'
+        # else:
+        #     after_value = ''
+        #
+        # params = {
+        #     ('query_hash', 'c76146de99bb02f6415203be841dd25a'),
+        #     ('variables', f'{{"id":"{id}","include_reel":true,"fetch_mutual":false,"first":1000{after_value}}}'),
+        # }
 
         response = requests.get('https://www.instagram.com/graphql/query/', headers=headers, params=params)
-
+        print(response.content)
         response = json.loads((response.text).encode("utf-16"))
 
         after = response['data']['user']['edge_followed_by']['page_info']['end_cursor']
-        # print(str(after))
+        print(str(after))
 
         data_count = response['data']['user']['edge_followed_by']['count']
 
@@ -118,6 +152,8 @@ while main_running:
         #     time.sleep(3)
 
         objects = response['data']['user']['edge_followed_by']['edges']
+
+        print(response['data']['user']['edge_followed_by'])
 
         if len(followers1) == 0:
             data_count_changed = 0
@@ -138,7 +174,7 @@ while main_running:
                 if index == data_count_changed:
                     running = False
                     index = 0
-                    print(colored('Followers from first account had parsed!', 'cyan'))
+                    print(colored('Subscribers from the first account were parsed!', 'cyan'))
                     print(colored('----------------------------------------', 'cyan'))
                     logging.debug('Фоловеры были спрашены с первого аккаунта')
                     break
@@ -148,7 +184,7 @@ while main_running:
                 if index == data_count:
                     main_running = False
                     running = False
-                    print(colored('Followers from second account had parsed!', 'cyan'))
+                    print(colored('Subscribers from the second account were parsed!', 'cyan'))
                     print(colored('----------------------------------------', 'cyan'))
                     logging.debug('Фоловеры были спрашены со второго аккаунта')
                     break
